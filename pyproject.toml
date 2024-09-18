@@ -1,0 +1,28 @@
+[tool.poetry]
+name = "video-semantic-search"
+version = "0.1.0"
+description = "Video Semantic Search is created to search a database of videos for the ones most semantically relevant to an input query."
+authors = ["Daniel Shan <dan.shanny@gmail.com>", "Shihang Wei <shihang.wei@nyu.edu>"]
+readme = "README.md"
+repository = "https://github.com/daniel-shan/video-semantic-search"
+packages = [{include = "video_semantic_search"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+torch = "^2.3.0"
+torchvision = "^0.18.0"
+open-clip-torch = "^2.24.0"
+pillow = "^10.3.0"
+safetensors = "^0.4.3"
+
+[tool.poetry.group.dev.dependencies]
+torch = "^2.3.0"
+pillow = "^10.3.0"
+open-clip-torch = "^2.24.0"
+torchvision = "^0.18.0"
+safetensors = "^0.4.3"
+pytest = "^8.2.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
