@@ -144,12 +144,12 @@ class VSS:
             for file_name in files:
                 os.remove(file_name)
 
-        file_to_save = {}
+        collection = {}
         # filepath = self.videos_names_list
         self.collection = self.client.get_or_create_collection(name="test")
         for file_name in self.videos_names_list:
             if file_name.endswith(".mov"):
-                (
+                (   
                     ffmpeg
                     .input(self.video_path + file_name)
                     .output(f"{self.frames_path}/%d.png",vf="fps=1")
@@ -163,13 +163,13 @@ class VSS:
                 documents=[str(test)],
                 ids = [file_name]
             )
-            # file_to_save[file_name] = embeddings
+            collection[file_name] = embeddings
 
             files = glob.glob(f"{self.frames_path}/*")
             for file_name in files:
                 os.remove(file_name)
         # save_file(file_to_save, self.frame_embeddings_st_path)
-        # return file_to_save
+        return collection
         
     def _generate_centroid_map(self):
         '''
@@ -180,13 +180,12 @@ class VSS:
         '''
         # find norm of each vector, average, use as centroid
         # or, find which vector has the closest norm to the average norm
-        if not self.client.get_or_create_collection("test"):
-            self.frame_embeddings = self._generate_embeddings_from_vid()
-        else:
-            self.collection = self.client.get_or_create_collection("test")
-            for name in self.videos_names_list:
-                key =torch.FloatTensor(ast.literal_eval(self.collection.get(ids=[name])["documents"][0]))
-                self.frame_embeddings[name] = key
+        # if not self.client.get_or_create_collection("test"):
+        self.frame_embeddings = self._generate_embeddings_from_vid()
+        self.collection = self.client.get_or_create_collection("test")
+        for name in self.videos_names_list:
+            key =torch.FloatTensor(ast.literal_eval(self.collection.get(ids=[name])["documents"][0]))
+            self.frame_embeddings[name] = key
             # with safe_open(self.frame_embeddings_st_path,
             #                framework="pt",
             #                device=self.device) as f:
@@ -284,6 +283,7 @@ class VSS:
         for video_file in self.frame_embeddings.keys(): #key is video file name
             if self.frame_embeddings[video_file].equal(self.centroidMap[lowest_vector]):
                 print(video_file) 
+        return video_file
                 # return (key,lowest_vector)
 
 testing = VSS(video_path="video_semantic_search/testing/")
