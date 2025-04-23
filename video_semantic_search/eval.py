@@ -32,7 +32,7 @@ class VSS_Evaluator:
 
         return score
 
-testing_videos_path = "video_semantic_search/testing/"
+testing_videos_path = "data/testing/"
 vss = VSS(video_path= testing_videos_path)
 
 # Define the ground truth data
